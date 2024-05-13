@@ -1,0 +1,6 @@
+/ReferenceCode/
+
+# Environments
+.env
+.venv
+venv/
