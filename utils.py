@@ -192,3 +192,20 @@ def get_articles(
             continue
 
     return articles
+
+def get_html(
+    search_term: str,
+    time_in_days: int=7,
+    verbose: bool=True,
+) -> str:
+    """Get the raw HTML of all Google Scholar articles published within time span for a given search term."""
+
+    class MyOpener(FancyURLopener):
+        version = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'
+    openurl = MyOpener().open
+
+    url = f"https://scholar.google.com/scholar?hl=en&scisbd=1&as_sdt=0%2C5&q=%22{search_term.replace(' ', '+')}%22&btnG="
+    soup = BeautifulSoup(openurl(url).read())
+    all_articles = soup.find_all("div", {"class": "gs_r gs_or gs_scl"})
+
+    return all_articles
